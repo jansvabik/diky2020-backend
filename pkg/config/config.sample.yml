@@ -1,0 +1,15 @@
+# app
+app:
+  name: diky2020-backend
+  env: production
+
+# database configuration
+database:
+  host: database.host.url
+  port: 27017
+  name: database_name
+  user: username
+  password: password
+
+# rabbitmq configuration
+queue:
