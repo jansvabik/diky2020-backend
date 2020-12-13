@@ -5,10 +5,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/noltio/tiskarnik-ms-auth/pkg/app"
-	"github.com/noltio/tiskarnik-ms-auth/pkg/config"
-	"github.com/noltio/tiskarnik-ms-auth/pkg/db"
-	"github.com/noltio/tiskarnik-ms-auth/pkg/router"
+	"github.com/noltio/diky2020-backend/pkg/app"
+	"github.com/noltio/diky2020-backend/pkg/config"
+	"github.com/noltio/diky2020-backend/pkg/db"
+	"github.com/noltio/diky2020-backend/pkg/router"
 )
 
 func main() {

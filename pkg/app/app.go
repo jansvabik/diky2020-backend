@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/noltio/tiskarnik-ms-auth/pkg/config"
+	"github.com/noltio/diky2020-backend/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

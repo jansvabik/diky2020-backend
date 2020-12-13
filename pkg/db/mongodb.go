@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/noltio/tiskarnik-ms-auth/pkg/app"
+	"github.com/noltio/diky2020-backend/pkg/app"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )

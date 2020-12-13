@@ -1,4 +1,4 @@
-module github.com/noltio/tiskarnik-ms-auth
+module github.com/noltio/diky2020-backend
 
 go 1.14
 
