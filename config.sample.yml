@@ -7,6 +7,10 @@ app:
 net:
   port: 9000
 
+# security data
+security:
+  donioValidationToken: donio-token
+
 # database configuration
 database:
   host: database.host.url
