@@ -3,6 +3,10 @@ app:
   name: diky2020-backend
   env: production
 
+# net
+net:
+  port: 9000
+
 # database configuration
 database:
   host: database.host.url

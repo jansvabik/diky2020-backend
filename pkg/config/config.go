@@ -10,6 +10,9 @@ type Config struct {
 		Name string `json:"name"`
 		Env  string `json:"env"`
 	}
+	Net struct {
+		Port int
+	}
 	Database struct {
 		Host     string
 		Port     string
@@ -26,7 +29,7 @@ func Load(cfg *Config) error {
 	// set up config file name
 	viper.SetConfigName("config")
 	viper.SetConfigType("yml")
-	viper.AddConfigPath("./pkg/config")
+	viper.AddConfigPath(".")
 
 	// read the file
 	err := viper.ReadInConfig()

@@ -1,6 +1,8 @@
 package router
 
 import (
+	"strconv"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/noltio/diky2020-backend/internal/thanks"
 	"github.com/noltio/diky2020-backend/pkg/app"
@@ -12,5 +14,5 @@ func InitRoutes() {
 	router.Get("/", app.StatusHandler)
 	router.Get("/thanks", thanks.ReadHandler)
 	router.Post("/thanks", thanks.CreateHandler)
-	router.Listen(":80")
+	router.Listen(":" + strconv.Itoa(app.State.Cfg.Net.Port))
 }
