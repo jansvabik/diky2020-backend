@@ -25,13 +25,13 @@ func Create() {
 
 // StatusHandler is a http handler for /
 func StatusHandler(c *fiber.Ctx) error {
-	return c.JSON(struct {
-		Name    string    `json:"name"`
-		Env     string    `json:"env"`
-		Started time.Time `json:"started"`
-	}{
-		Name:    State.Cfg.App.Name,
-		Env:     State.Cfg.App.Env,
-		Started: State.Started,
+	return c.JSON(map[string]interface{}{
+		"name":    State.Cfg.App.Name,
+		"env":     State.Cfg.App.Env,
+		"started": State.Started,
+		"links": map[string]string{
+			"status": "/",
+			"thanks": "/thanks",
+		},
 	})
 }
