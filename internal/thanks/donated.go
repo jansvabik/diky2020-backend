@@ -9,6 +9,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/noltio/diky2020-backend/pkg/app"
+	"github.com/noltio/diky2020-backend/pkg/db"
 	"github.com/noltio/diky2020-backend/pkg/server"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -31,7 +32,7 @@ func patchDonated(id primitive.ObjectID, target string, amount int) (*Thanks, er
 
 	// query options
 	after := options.After
-	opts := options.FindOneAndUpdateOptions{
+	fopts := options.FindOneAndUpdateOptions{
 		ReturnDocument: &after,
 	}
 
@@ -46,11 +47,27 @@ func patchDonated(id primitive.ObjectID, target string, amount int) (*Thanks, er
 				"amount": amount,
 			},
 		},
-	}, &opts).Decode(&result)
+	}, &fopts).Decode(&result)
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil, err
 	}
+
+	// increment the total value of donations for homepage analytics
+	u := true
+	uopts := options.UpdateOptions{
+		Upsert: &u,
+	}
+	_, err = db.Collection("welcome").UpdateOne(ctx, bson.M{}, bson.M{
+		"$inc": bson.M{
+			"count":  0,
+			"amount": amount,
+		},
+	}, &uopts)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
 	return &result, nil
 }
 

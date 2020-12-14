@@ -2,8 +2,16 @@ package welcome
 
 import (
 	"github.com/noltio/diky2020-backend/pkg/app"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+// WData is a data structure for homepage analytics data
+type WData struct {
+	ID     primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Amount int                `json:"amount" bson:"amount"`
+	Count  int                `json:"count" bson:"count"`
+}
 
 // collection returns the collection for the current data
 func collection() *mongo.Collection {
