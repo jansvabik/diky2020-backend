@@ -30,7 +30,7 @@ func ReadHandler(c *fiber.Ctx) error {
 		response["thanks"].(map[string]interface{})["_last"] = true
 	} else {
 		response["thanks"].(map[string]interface{})["_last"] = false
-		response["thanks"].(map[string]interface{})["_next"] = "/thanks/2/"
+		response["thanks"].(map[string]interface{})["_next"] = "/thanks/2/?perPage=8"
 	}
 
 	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", response)

@@ -92,7 +92,7 @@ func ReadHandler(c *fiber.Ctx) error {
 	if isLastPage {
 		result["_last"] = true
 	} else {
-		result["_next"] = "/thanks/" + strconv.Itoa(page+1) + "/"
+		result["_next"] = "/thanks/" + strconv.Itoa(page+1) + "/?perPage=" + strconv.Itoa(perPage)
 	}
 
 	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", result)
