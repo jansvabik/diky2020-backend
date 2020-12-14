@@ -30,8 +30,9 @@ func StatusHandler(c *fiber.Ctx) error {
 		"env":     State.Cfg.App.Env,
 		"started": State.Started,
 		"links": map[string]string{
-			"status": "/",
-			"thanks": "/thanks",
+			"status":       "/",
+			"homepageData": "/welcome",
+			"thanks":       "/thanks",
 		},
 	})
 }

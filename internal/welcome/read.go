@@ -9,7 +9,7 @@ import (
 // ReadHandler handles read requests for welcome
 func ReadHandler(c *fiber.Ctx) error {
 	// get first page of thanks
-	data, isLastPage, err := thanks.Read(1, 2)
+	data, isLastPage, err := thanks.Read(1, 8)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}

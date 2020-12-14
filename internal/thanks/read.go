@@ -66,8 +66,18 @@ func ReadHandler(c *fiber.Ctx) error {
 		return server.APIError(c, "Číslo stránky musí být kladné celé číslo", 400)
 	}
 
+	// extract and validate the perPage param
+	perPageParam := c.Query("perPage", "8")
+	if len(pageParam) == 0 {
+		pageParam = "1"
+	}
+	perPage, err := strconv.Atoi(perPageParam)
+	if err != nil || perPage < 0 {
+		return server.APIError(c, "Počet záznamů na stránce musí být kladné celé číslo", 400)
+	}
+
 	// get thanks from database
-	list, isLastPage, err := Read(page, 2)
+	list, isLastPage, err := Read(page, perPage)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}
