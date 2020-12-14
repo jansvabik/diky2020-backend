@@ -16,11 +16,12 @@ type Donation struct {
 
 // Thanks is a thanks data structure
 type Thanks struct {
-	ID       primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
-	Name     string             `json:"name" bson:"name"`
-	Text     string             `json:"text" bson:"text"`
-	Time     *time.Time         `json:"time" bson:"time"`
-	Donation *Donation          `json:"donation" bson:"donation"`
+	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	Name      string             `json:"name" bson:"name"`
+	Addressee string             `json:"addressee" bson:"addressee"`
+	Text      string             `json:"text" bson:"text"`
+	Time      *time.Time         `json:"time" bson:"time"`
+	Donation  *Donation          `json:"donation" bson:"donation"`
 }
 
 // collection returns the collection for the current data

@@ -11,6 +11,6 @@ func InitRoutes() {
 	router := fiber.New()
 	router.Get("/", app.StatusHandler)
 	router.Get("/thanks", thanks.ReadHandler)
-	router.Get("/thanks", thanks.CreateHandler)
+	router.Post("/thanks", thanks.CreateHandler)
 	router.Listen(":80")
 }
