@@ -30,3 +30,8 @@ func MongoConnect() (*mongo.Client, error) {
 
 	return mongo.Connect(ctx, options)
 }
+
+// Collection returns the specified collection
+func Collection(c string) *mongo.Collection {
+	return app.State.MongoClient.Database(app.State.Cfg.Database.Name).Collection(c)
+}
