@@ -3,10 +3,10 @@ default:
 up:
 	go run cmd/backend/main.go
 
-main:
+build:
 	go build cmd/backend/main.go
 
-run: main
+run: build
 	./main
 
 dockerbuild:
