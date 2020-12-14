@@ -13,6 +13,9 @@ type Config struct {
 	Net struct {
 		Port int
 	}
+	Security struct {
+		DonioValidationToken string
+	}
 	Database struct {
 		Host     string
 		Port     string
