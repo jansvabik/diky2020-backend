@@ -35,16 +35,9 @@ func Read(page uint, perPage uint) ([]Thanks, error) {
 
 // ReadHandler handles read requests for thanks
 func ReadHandler(c *fiber.Ctx) error {
-	// try to get the thanks
 	list, err := Read(1, 10)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}
-
-	// ok response
-	return c.JSON(server.APIResponse{
-		Status: "OK",
-		Msg:    "Data has been retrieved successfully.",
-		Data:   list,
-	})
+	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", list)
 }
