@@ -20,7 +20,7 @@ type Thanks struct {
 	Name     string             `json:"name" bson:"name"`
 	Text     string             `json:"text" bson:"text"`
 	Time     *time.Time         `json:"time" bson:"time"`
-	Donation *Donation          `json:"donation,omitempty" bson:"donation"`
+	Donation *Donation          `json:"donation" bson:"donation"`
 }
 
 // collection returns the collection for the current data
