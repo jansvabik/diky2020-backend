@@ -14,16 +14,23 @@ type APIResponse struct {
 // APIInternalServerError returns the fiber function for
 // internal server error including the JSON data
 func APIInternalServerError(c *fiber.Ctx) error {
-	return c.Status(500).JSON(APIResponse{
+	err := c.Status(500).JSON(APIResponse{
 		Status: "ERR",
 		Msg:    "Omlouváme se, nastala u nás nečekaná chyba. Zkuste to prosím znovu za chvíli.",
 		Data:   nil,
 	})
+	if err != nil {
+		return err
+	}
+
+	// fix old browsers (like Safari) problems with encoding
+	// because of this line, we don't follow the RFC standard
+	c.Set("Content-Type", fiber.MIMEApplicationJSONCharsetUTF8)
+	return nil
 }
 
 // APIOK returns the fiber function for status OK response
 func APIOK(c *fiber.Ctx, msg string, data interface{}) error {
-	// create a json api response with status code 200 OK
 	err := c.Status(200).JSON(APIResponse{
 		Status: "OK",
 		Msg:    msg,
@@ -41,7 +48,6 @@ func APIOK(c *fiber.Ctx, msg string, data interface{}) error {
 
 // APIError returns the fiber function for error responses
 func APIError(c *fiber.Ctx, msg string, code int) error {
-	// create a json api response with the given status code
 	err := c.Status(code).JSON(APIResponse{
 		Status: "ERR",
 		Msg:    msg,
