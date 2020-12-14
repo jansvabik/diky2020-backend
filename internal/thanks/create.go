@@ -94,9 +94,5 @@ func CreateHandler(c *fiber.Ctx) error {
 	}
 
 	// encode to json and write response
-	return c.JSON(server.APIResponse{
-		Status: "OK",
-		Msg:    "Recipe was saved successfully.",
-		Data:   thanks,
-	})
+	return server.APIOK(c, "Vaše poděkování jsme uložili, díky!", thanks)
 }
