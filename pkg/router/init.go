@@ -7,6 +7,7 @@ import (
 	"github.com/noltio/diky2020-backend/internal/thanks"
 	"github.com/noltio/diky2020-backend/internal/welcome"
 	"github.com/noltio/diky2020-backend/pkg/app"
+	"github.com/noltio/diky2020-backend/pkg/recaptcha"
 )
 
 // InitRoutes initialize all routes of this REST API service
@@ -16,7 +17,7 @@ func InitRoutes() {
 	router.Get("/welcome", welcome.ReadHandler)
 	router.Get("/thanks", thanks.ReadHandler)
 	router.Get("/thanks/:page", thanks.ReadHandler)
-	router.Post("/thanks", thanks.CreateHandler)
+	router.Post("/thanks", recaptcha.Middleware, thanks.CreateHandler)
 	router.Post("/thanks/:id/donation", thanks.DonatedHandler)
 	router.Listen(":" + strconv.Itoa(app.State.Cfg.Net.Port))
 }

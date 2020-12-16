@@ -15,6 +15,10 @@ type Config struct {
 	}
 	Security struct {
 		DonioValidationToken string
+		Recaptcha            struct {
+			SiteKey   string
+			SecretKey string
+		}
 	}
 	Database struct {
 		Host     string

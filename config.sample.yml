@@ -10,6 +10,9 @@ net:
 # security data
 security:
   donioValidationToken: donio-token
+  recaptcha:
+    siteKey: recaptcha-site-key
+    secretKey: recaptcha-secret-key
 
 # database configuration
 database:
