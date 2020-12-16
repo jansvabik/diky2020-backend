@@ -1,11 +1,10 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  description: "This is an official documentation for the Díky 2020 project by František Soudek. You can find here well-described API endpoints, parameters, responses and so on. I hope it is clean and simple and you'll find everything what you'll be searching for."
   version: "1.0.0"
-  title: "Swagger Petstore"
-  termsOfService: "http://swagger.io/terms/"
+  title: "Díky 2020"
   contact:
-    email: "apiteam@swagger.io"
+    email: "jan.svabik@noltio.com"
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -16,6 +15,8 @@ tags:
   description: "Donations and thanks counter"
 - name: "Thanks"
   description: "Endpoints withing the Thanks data"
+- name: "Donations (Donio)"
+  description: "Endpoints for Donio connection"
 schemes:
 - "https"
 paths:
@@ -93,6 +94,49 @@ paths:
           description: "New thanks was saved successfully!"
           schema:
             $ref: "#/definitions/OKResponse"
+  /thanks/{page}:
+    get:
+      tags:
+      - "Thanks"
+      summary: "Get specified page of thanks from database"
+      description: ""
+      operationId: "getThanksPage"
+      parameters:
+      - name: "page"
+        description: "The number of page to display"
+        in: "path"
+        type: "number"
+        required: true
+      - name: "perPage"
+        description: "The number of results per one page"
+        in: "query"
+        default: 8
+        type: "number"
+      - name: "sortBy"
+        description: "The field name to sort by"
+        in: "query"
+        default: "time"
+        type: "string"
+        enum:
+        - "likes"
+        - "time"
+      - name: "sortType"
+        description: "The field name to sort by"
+        default: "desc"
+        in: "query"
+        type: "string"
+        enum:
+        - "asc"
+        - "desc"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "You've got the data! Use them simply!"
+          schema:
+            $ref: "#/definitions/ThanksResponse"
+        "400":
+          description: "Invalid request"
   /thanks/{thanksId}/likes:
     post:
       tags:
@@ -109,6 +153,45 @@ paths:
           description: "New thanks was saved successfully!"
           schema:
             $ref: "#/definitions/OKResponse"
+  /thanks/{thanksId}/donation:
+    post:
+      tags:
+      - "Donations (Donio)"
+      summary: "Save donation to the specified thanks"
+      description: "This endpoint allows Donio website/backend to save a donation data to the specified thanks in URL parameter thanksID. It is secured by validationToken."
+      parameters:
+      - name: "thanksId"
+        type: "string"
+        in: "path"
+        required: true
+      - name: "body"
+        description: "Body data"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+          - "validationToken"
+          - "amount"
+          - "target"
+          properties:
+            validationToken:
+              type: "string"
+              description: "Unique security token for allowing the entire connection"
+              example: "/JCt+etx%=DJ.M(Q>KyET}7AL&k9\"{.-"
+            amount:
+              type: "number"
+              description: "The donated amount of money"
+              example: 2500
+            target:
+              type: "number"
+              description: "Unique Donio ID of the donated project."
+              example: 385
+      responses:
+        "200":
+          description: "Donation was saved!"
+          schema:
+            $ref: '#/definitions/OKResponse'
 definitions:
   ThanksResponse:
     type: "object"
@@ -169,7 +252,7 @@ definitions:
       text:
         type: "string"
         example: "Brácho,\n\ndíky moc, že jsi se mnou po celý rok byl a že jsi mi pomohl vše zvládnout a přestát."
-      time: 
+      time:
         type: "string"
         format: "date-time"
       likes:
@@ -179,10 +262,10 @@ definitions:
       donation:
         type: "object"
         properties:
-          target: 
+          target:
             type: "string"
             example: "matkám samoživitelkám"
-          amount: 
+          amount:
             type: "number"
             example: 4000
     xml:
@@ -219,7 +302,7 @@ definitions:
     - "addressee"
     - "text"
     properties:
-      name: 
+      name:
         type: "string"
         description: "asf"
         example: "František"
