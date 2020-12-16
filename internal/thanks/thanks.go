@@ -21,6 +21,7 @@ type Thanks struct {
 	Addressee string             `json:"addressee" bson:"addressee"`
 	Text      string             `json:"text" bson:"text"`
 	Time      *time.Time         `json:"time" bson:"time"`
+	Likes     uint               `json:"likes" bson:"likes"`
 	Donation  *Donation          `json:"donation" bson:"donation"`
 }
 

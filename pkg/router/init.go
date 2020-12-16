@@ -19,5 +19,6 @@ func InitRoutes() {
 	router.Get("/thanks/:page", thanks.ReadHandler)
 	router.Post("/thanks", recaptcha.Middleware, thanks.CreateHandler)
 	router.Post("/thanks/:id/donation", thanks.DonatedHandler)
+	router.Post("/thanks/:id/likes", thanks.LikeHandler)
 	router.Listen(":" + strconv.Itoa(app.State.Cfg.Net.Port))
 }
