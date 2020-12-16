@@ -5,10 +5,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/noltio/diky2020-backend/internal/thanks"
 	"github.com/noltio/diky2020-backend/pkg/server"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Get gets the homepage analytics data from database
@@ -18,12 +16,9 @@ func Get() (WData, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// mongodb options
-	opts := options.FindOneOptions{}
-
 	// get the data
 	var result WData
-	err := collection().FindOne(ctx, bson.M{}, &opts).Decode(&result)
+	err := collection().FindOne(ctx, bson.M{}).Decode(&result)
 	if err != nil {
 		return WData{}, err
 	}
@@ -33,34 +28,16 @@ func Get() (WData, error) {
 
 // ReadHandler handles read requests for welcome
 func ReadHandler(c *fiber.Ctx) error {
-	// get welcome data and first page of thanks
+	// get welcome data and create the response
 	wdata, err := Get()
-	thanksList, isLastPage, err := thanks.Read(1, 8, "time", -1)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}
 
-	// basic response data structure
+	// create and send the response structure
 	response := map[string]interface{}{
-		"donated": map[string]interface{}{
-			"count":  wdata.Count,
-			"amount": wdata.Amount,
-		},
-		"thanks": map[string]interface{}{
-			"results": thanksList,
-		},
+		"totalThanks": wdata.Count,
+		"donated":     wdata.Amount,
 	}
-
-	// meta params and url params settings
-	if isLastPage {
-		response["thanks"].(map[string]interface{})["_last"] = true
-	} else {
-		response["thanks"].(map[string]interface{})["_last"] = false
-		response["thanks"].(map[string]interface{})["_next"] = "/thanks/2/" +
-			"?perPage=8" +
-			"&sortBy=time" +
-			"&sortType=desc"
-	}
-
 	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", response)
 }
