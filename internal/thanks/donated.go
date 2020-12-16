@@ -103,6 +103,9 @@ func DonatedHandler(c *fiber.Ctx) error {
 	// update the data in database
 	list, err := patchDonated(oid, pl.Target, pl.Amount)
 	if err != nil {
+		if err.Error() == "mongo: no documents in result" {
+			return server.APIError(c, "Dokument s tímto ID neexistuje.", 404)
+		}
 		return server.APIInternalServerError(c)
 	}
 	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", list)
