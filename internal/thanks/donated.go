@@ -97,7 +97,7 @@ func DonatedHandler(c *fiber.Ctx) error {
 	// create an object id from the id param string
 	oid, err := primitive.ObjectIDFromHex(c.Params("id"))
 	if err != nil {
-		return server.APIError(c, "Dokument s tímto ID neexistuje.", 400)
+		return server.APIError(c, "Dokument s tímto ID neexistuje.", 404)
 	}
 
 	// update the data in database
