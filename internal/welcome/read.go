@@ -35,7 +35,7 @@ func Get() (WData, error) {
 func ReadHandler(c *fiber.Ctx) error {
 	// get welcome data and first page of thanks
 	wdata, err := Get()
-	thanksList, isLastPage, err := thanks.Read(1, 8)
+	thanksList, isLastPage, err := thanks.Read(1, 8, "time", -1)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}
@@ -51,12 +51,15 @@ func ReadHandler(c *fiber.Ctx) error {
 		},
 	}
 
-	// changes depending to the last page
+	// meta params and url params settings
 	if isLastPage {
 		response["thanks"].(map[string]interface{})["_last"] = true
 	} else {
 		response["thanks"].(map[string]interface{})["_last"] = false
-		response["thanks"].(map[string]interface{})["_next"] = "/thanks/2/?perPage=8"
+		response["thanks"].(map[string]interface{})["_next"] = "/thanks/2/" +
+			"?perPage=8" +
+			"&sortBy=time" +
+			"&sortType=desc"
 	}
 
 	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", response)

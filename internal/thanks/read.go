@@ -13,7 +13,7 @@ import (
 
 // Read reads the specified amount of thanks from database
 // and returns them in a slice of Thank structures
-func Read(page int, perPage int) ([]Thanks, bool, error) {
+func Read(page int, perPage int, sortBy string, sortType int) ([]Thanks, bool, error) {
 	// create a background context
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -24,6 +24,9 @@ func Read(page int, perPage int) ([]Thanks, bool, error) {
 	opts := options.FindOptions{
 		Skip:  &skip,
 		Limit: &limit,
+		Sort: map[string]int{
+			sortBy: sortType,
+		},
 	}
 
 	// get data from database
@@ -68,16 +71,26 @@ func ReadHandler(c *fiber.Ctx) error {
 
 	// extract and validate the perPage param
 	perPageParam := c.Query("perPage", "8")
-	if len(pageParam) == 0 {
-		pageParam = "1"
-	}
 	perPage, err := strconv.Atoi(perPageParam)
 	if err != nil || perPage < 0 {
 		return server.APIError(c, "Počet záznamů na stránce musí být kladné celé číslo", 400)
 	}
 
+	// extract and validate the sortBy param
+	sortBy := c.Query("sortBy", "time")
+	if sortBy != "time" && sortBy != "likes" {
+		return server.APIError(c, "Řadit je možné jen podle času (time) a počtu liků (likes).", 400)
+	}
+
+	// extract and validate the sortType param
+	sortTypeParam := c.Query("sortType", "asc")
+	sortType := 1
+	if sortTypeParam == "desc" {
+		sortType = -1
+	}
+
 	// get thanks from database
-	list, isLastPage, err := Read(page, perPage)
+	list, isLastPage, err := Read(page, perPage, sortBy, sortType)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}
@@ -92,7 +105,10 @@ func ReadHandler(c *fiber.Ctx) error {
 	if isLastPage {
 		result["_last"] = true
 	} else {
-		result["_next"] = "/thanks/" + strconv.Itoa(page+1) + "/?perPage=" + strconv.Itoa(perPage)
+		result["_next"] = "/thanks/" + strconv.Itoa(page+1) +
+			"/?perPage=" + strconv.Itoa(perPage) +
+			"&sortBy=" + sortBy +
+			"&sortType=" + sortTypeParam
 	}
 
 	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", result)
