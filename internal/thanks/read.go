@@ -83,7 +83,7 @@ func ReadHandler(c *fiber.Ctx) error {
 	}
 
 	// extract and validate the sortType param
-	sortTypeParam := c.Query("sortType", "asc")
+	sortTypeParam := c.Query("sortType", "desc")
 	sortType := 1
 	if sortTypeParam == "desc" {
 		sortType = -1
