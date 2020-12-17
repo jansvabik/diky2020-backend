@@ -2,7 +2,6 @@ package thanks
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -17,9 +16,9 @@ import (
 
 // createPayload is a POST /thanks payload data structure
 type createPayload struct {
-	Name      string `json:"name"`
-	Addressee string `json:"addressee"`
-	Text      string `json:"text"`
+	Name      string `json:"name" form:"name"`
+	Addressee string `json:"addressee" form:"addressee"`
+	Text      string `json:"text" form:"text"`
 }
 
 // Create creates new thanks in database
@@ -56,17 +55,9 @@ func Create(t Thanks) (Thanks, error) {
 
 // CreateHandler handles create requests for thanks
 func CreateHandler(c *fiber.Ctx) error {
-	// test json validity
-	if !json.Valid(c.Body()) {
-		return c.Status(400).JSON(server.APIResponse{
-			Status: "ERR",
-			Msg:    "Your JSON is not valid.",
-		})
-	}
-
 	// create new thanks struct
 	var pl createPayload
-	err := json.Unmarshal(c.Body(), &pl)
+	err := c.BodyParser(&pl)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}
@@ -100,14 +91,22 @@ func CreateHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	// save to database
+	// create database document
 	ts := time.Now()
-	thanks, err := Create(Thanks{
+	t := Thanks{
 		Name:      pl.Name,
 		Text:      pl.Text,
 		Addressee: pl.Addressee,
 		Time:      &ts,
-	})
+	}
+
+	// add image url if uploaded
+	if c.Locals("uploadedFile").(bool) {
+		t.Image = "https://cdn.diky2020.cz/" + c.Locals("uploadedFileName").(string)
+	}
+
+	// save
+	thanks, err := Create(t)
 	if err != nil {
 		return server.APIInternalServerError(c)
 	}
