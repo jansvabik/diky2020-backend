@@ -14,7 +14,7 @@ import (
 
 // request is a structure for extracting g-recaptcha-response field from request
 type request struct {
-	GRecaptchaResponse string `json:"g-recaptcha-response"`
+	GRecaptchaResponse string `json:"g-recaptcha-response" form:"g-recaptcha-response"`
 }
 
 // googleResponse is a structure with Google validation response data
