@@ -38,6 +38,7 @@ func ReadHandler(c *fiber.Ctx) error {
 	response := map[string]interface{}{
 		"totalThanks": wdata.Count,
 		"donated":     wdata.Amount,
+		"eventEnd":    wdata.EventEnd,
 	}
 	return server.APIOK(c, "Požadavek byl úspěšně zpracován.", response)
 }
