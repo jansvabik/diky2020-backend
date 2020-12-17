@@ -33,7 +33,7 @@ paths:
         "200":
           description: "You've got the data! Use them simply!"
           schema:
-            $ref: "#/definitions/Donation"
+            $ref: "#/definitions/Welcome"
         "400":
           description: "Invalid status value"
   /thanks:
@@ -270,7 +270,7 @@ definitions:
             example: 4000
     xml:
       name: "Welcome"
-  Donation:
+  Welcome:
     type: "object"
     properties:
       status:
@@ -295,6 +295,9 @@ definitions:
             type: "integer"
             format: "int32"
             example: 2959
+          eventEnd:
+            type: "string"
+            format: "date-time"
   ThanksRequest:
     type: "object"
     required:
