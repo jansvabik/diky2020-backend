@@ -41,12 +41,13 @@ func ImageUploadHandler(c *fiber.Ctx) error {
 
 	// filename (for both temp and resized file)
 	filename := fmt.Sprintf("%s.%s", guid.New().String(), mimes[ct])
+	filepath := "/upload/" + filename
 
 	// save the original file
-	c.SaveFile(file, filename)
+	c.SaveFile(file, filepath)
 
 	// open the uploaded file
-	nrf, err := os.Open(filename)
+	nrf, err := os.Open(filepath)
 	if err != nil {
 		fmt.Println(err.Error())
 		return server.APIInternalServerError(c)
@@ -65,7 +66,7 @@ func ImageUploadHandler(c *fiber.Ctx) error {
 	m := resize.Resize(600, 0, img, resize.Lanczos3)
 
 	// save new file
-	out, err := os.Create(filename)
+	out, err := os.Create(filepath)
 	if err != nil {
 		fmt.Println(err.Error())
 		return server.APIInternalServerError(c)
