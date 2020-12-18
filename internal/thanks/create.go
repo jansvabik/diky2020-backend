@@ -8,6 +8,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/noltio/diky2020-backend/pkg/db"
+	"github.com/noltio/diky2020-backend/pkg/randomstring"
 	"github.com/noltio/diky2020-backend/pkg/server"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -95,6 +96,7 @@ func CreateHandler(c *fiber.Ctx) error {
 	ts := time.Now()
 	t := Thanks{
 		Name:      pl.Name,
+		ShortID:   randomstring.Generate(8),
 		Text:      pl.Text,
 		Addressee: pl.Addressee,
 		Time:      &ts,

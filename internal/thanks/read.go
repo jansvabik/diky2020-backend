@@ -59,20 +59,17 @@ func Read(page int, perPage int, sortBy string, sortType int) ([]Thanks, bool, e
 
 // ReadHandler handles read requests for thanks
 func ReadHandler(c *fiber.Ctx) error {
-	// extract and validate the page number
-	pageParam := c.Params("page")
-	if len(pageParam) == 0 {
-		pageParam = "1"
-	}
+	// extract and validate the page param
+	pageParam := c.Query("page", "1")
 	page, err := strconv.Atoi(pageParam)
-	if err != nil || page < 0 {
+	if err != nil || page < 1 {
 		return server.APIError(c, "Číslo stránky musí být kladné celé číslo", 400)
 	}
 
 	// extract and validate the perPage param
 	perPageParam := c.Query("perPage", "8")
 	perPage, err := strconv.Atoi(perPageParam)
-	if err != nil || perPage < 0 {
+	if err != nil || perPage < 1 {
 		return server.APIError(c, "Počet záznamů na stránce musí být kladné celé číslo", 400)
 	}
 
@@ -105,8 +102,9 @@ func ReadHandler(c *fiber.Ctx) error {
 	if isLastPage {
 		result["_last"] = true
 	} else {
-		result["_next"] = "/thanks/" + strconv.Itoa(page+1) +
-			"/?perPage=" + strconv.Itoa(perPage) +
+		result["_next"] = "/thanks/" +
+			"?page=" + strconv.Itoa(page+1) +
+			"&perPage=" + strconv.Itoa(perPage) +
 			"&sortBy=" + sortBy +
 			"&sortType=" + sortTypeParam
 	}

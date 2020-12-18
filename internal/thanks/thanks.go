@@ -17,6 +17,7 @@ type Donation struct {
 // Thanks is a thanks data structure
 type Thanks struct {
 	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	ShortID   string             `json:"shortId" bson:"shortId"`
 	Name      string             `json:"name" bson:"name"`
 	Addressee string             `json:"addressee" bson:"addressee"`
 	Text      string             `json:"text" bson:"text"`
