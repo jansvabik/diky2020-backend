@@ -13,8 +13,7 @@ dockerbuild:
 	docker build -f Dockerfile -t diky2020-backend:1.0 .
 
 dockerrun:
-	docker run -d -ti --network host --name diky2020-backend diky2020-backend:1.0
-	#docker run -ti -p 9000:9000 -v ~/Desktop/imgs:/upload --name diky2020-backend diky2020-backend:1.0
+	docker run -d -ti --network host -v /var/www/diky2020/cdn.diky2020.cz:/upload -v ~/diky2020-backend/config.yml:/app/config.yml --name diky2020-backend diky2020-backend:1.0
 
 dockerstop:
 	docker stop diky2020-backend
