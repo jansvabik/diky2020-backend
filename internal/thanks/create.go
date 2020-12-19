@@ -75,6 +75,12 @@ func CreateHandler(c *fiber.Ctx) error {
 			Msg:    "Jméno by mělo mít alespoň tři znaky.",
 		})
 	}
+	if len(pl.Name) > 64 {
+		return c.JSON(server.APIResponse{
+			Status: "ERR",
+			Msg:    "Jméno by nemělo mít více než 64 znaků.",
+		})
+	}
 
 	// addressee validation
 	if len(pl.Addressee) < 3 {
@@ -83,12 +89,24 @@ func CreateHandler(c *fiber.Ctx) error {
 			Msg:    "Příjemce poděkování by měl mít alespoň tři znaky.",
 		})
 	}
+	if len(pl.Addressee) > 64 {
+		return c.JSON(server.APIResponse{
+			Status: "ERR",
+			Msg:    "Příjemce poděkování by neměl být delší než 64 znaků.",
+		})
+	}
 
 	// text validation
 	if len(pl.Text) < 3 {
 		return c.JSON(server.APIResponse{
 			Status: "ERR",
 			Msg:    "Zkusíte vymyslet o trošku delší poděkování, ať to stojí za to? Zkuste ho třeba někomu věnovat nebo vyjmenovat věci, za které jste vděčni. :)",
+		})
+	}
+	if len(pl.Text) > 600 {
+		return c.JSON(server.APIResponse{
+			Status: "ERR",
+			Msg:    "Zkusíte poděkování trošku zkrátit? Maximální délku jsme omezili na 600 znaků. Zkuste to jasně a výstižně, děkujeme! :)",
 		})
 	}
 
