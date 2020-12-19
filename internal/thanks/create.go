@@ -106,7 +106,7 @@ func CreateHandler(c *fiber.Ctx) error {
 	if len(pl.Text) > 600 {
 		return c.JSON(server.APIResponse{
 			Status: "ERR",
-			Msg:    "Zkusíte poděkování trošku zkrátit? Maximální délku jsme omezili na 600 znaků. Zkuste to jasně a výstižně, děkujeme! :)",
+			Msg:    "Zkusíte poděkování trošku zkrátit? Maximální délka je omezena na 600 znaků.",
 		})
 	}
 
