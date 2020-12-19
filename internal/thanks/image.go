@@ -2,7 +2,10 @@ package thanks
 
 import (
 	"fmt"
+	"image"
+	"image/gif"
 	"image/jpeg"
+	"image/png"
 	"os"
 
 	"github.com/beevik/guid"
@@ -55,7 +58,15 @@ func ImageUploadHandler(c *fiber.Ctx) error {
 	defer nrf.Close()
 
 	// decode jpeg into image.Image
-	img, err := jpeg.Decode(nrf)
+	var img image.Image
+	switch ct {
+	case "image/jpeg":
+		img, err = jpeg.Decode(nrf)
+	case "image/png":
+		img, err = png.Decode(nrf)
+	case "image/gif":
+		img, err = gif.Decode(nrf)
+	}
 	if err != nil {
 		fmt.Println(err.Error())
 		return server.APIInternalServerError(c)
