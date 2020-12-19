@@ -85,7 +85,18 @@ func ImageUploadHandler(c *fiber.Ctx) error {
 	defer out.Close()
 
 	// write new image to file
-	jpeg.Encode(out, m, nil)
+	switch ct {
+	case "image/jpeg":
+		err = jpeg.Encode(out, m, nil)
+	case "image/png":
+		err = png.Encode(out, m)
+	case "image/gif":
+		err = gif.Encode(out, m, nil)
+	}
+	if err != nil {
+		fmt.Println(err.Error())
+		return server.APIInternalServerError(c)
+	}
 
 	// store the data in local variables and move to the next handler
 	c.Locals("uploadedFile", true)
