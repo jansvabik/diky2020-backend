@@ -94,6 +94,17 @@ func DonatedHandler(c *fiber.Ctx) error {
 		return server.APIError(c, "Zadaný ověřovací token není validní.", 400)
 	}
 
+	// test allowed donation IDs
+	if pl.Target != "fd938b2b-2fd3-4c93-bedb-df28ed75dc61" && pl.Target != "ab8da340-31df-4746-be22-a1faecc7d252" {
+		return server.APIError(c, "ID, které jsme obdrželi, patří sbírce, kterou na své straně nepodporujeme. Požadavek byl úspěšně zpracován, data o přispění ale nebudou na straně Díky 2020 uložena.", 200)
+	}
+
+	// replace the target id by human-readable text
+	pl.Target = map[string]string{
+		"fd938b2b-2fd3-4c93-bedb-df28ed75dc61": "seniorům",
+		"ab8da340-31df-4746-be22-a1faecc7d252": "samoživitelům",
+	}[pl.Target]
+
 	// create an object id from the id param string
 	oid, err := primitive.ObjectIDFromHex(c.Params("id"))
 	if err != nil {
