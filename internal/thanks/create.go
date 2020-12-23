@@ -75,10 +75,10 @@ func CreateHandler(c *fiber.Ctx) error {
 			Msg:    "Jméno by mělo mít alespoň tři znaky.",
 		})
 	}
-	if len(pl.Name) > 64 {
+	if len(pl.Name) > 30 {
 		return c.JSON(server.APIResponse{
 			Status: "ERR",
-			Msg:    "Jméno by nemělo mít více než 64 znaků.",
+			Msg:    "Jméno by nemělo mít více než 30 znaků.",
 		})
 	}
 
@@ -89,10 +89,10 @@ func CreateHandler(c *fiber.Ctx) error {
 			Msg:    "Příjemce poděkování by měl mít alespoň tři znaky.",
 		})
 	}
-	if len(pl.Addressee) > 64 {
+	if len(pl.Addressee) > 30 {
 		return c.JSON(server.APIResponse{
 			Status: "ERR",
-			Msg:    "Příjemce poděkování by neměl být delší než 64 znaků.",
+			Msg:    "Příjemce poděkování by neměl být delší než 30 znaků.",
 		})
 	}
 
